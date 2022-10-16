@@ -1,37 +1,50 @@
+/**
+ * @description       : makes apex REST callouts to Spoonacular API to get recipe data
+ * @author            : Chloe Xinying Zhou  
+ * @last modified on  : 2022-10-16
+ * @last modified by  : Chloe Xinying Zhou  
+ * Ver   Date         Author                 Modification
+ * 1.0   2022-10-16   Chloe Xinying Zhou     Initial Version
+**/
 public class Spoonacular {
     private static final String SPOONACULAR_API = 'https://api.spoonacular.com';
-    private static final String API_KEY = '73bcd350939f49d4b74247118ea04c6e';
+    private static final String API_KEY = 'replace_with_your_own_api_key';
     
-    public static void getRandomReceipe() {
+    @AuraEnabled
+    public static String getRandomRecipe() {
         Http http = new Http();
         HttpRequest request = new HttpRequest();
         request.setEndpoint(SPOONACULAR_API + '/recipes/random?apiKey=' + API_KEY);
         request.setMethod('GET');
         HttpResponse response = http.send(request);
         
-        System.debug('response code : ' + response.getStatusCode());
         // If the request is successful, parse the JSON response.
         if(response.getStatusCode() == 200) {
-            System.debug('response code : ' + response.getBody());
+            return response.getBody();
+        } else {
+            return '';
         }
     }
     
-    public static void getReceipe(String receipeId) {
+    @AuraEnabled
+    public static String getRecipe(String recipeId) {
         Http http = new Http();
         HttpRequest request = new HttpRequest();
         //https://api.spoonacular.com/recipes/{id}/information
-        request.setEndpoint(SPOONACULAR_API + '/recipes/' + receipeId + '/information?apiKey=' + API_KEY);
+        request.setEndpoint(SPOONACULAR_API + '/recipes/' + recipeId + '/information?apiKey=' + API_KEY);
         request.setMethod('GET');
         HttpResponse response = http.send(request);
         
-        System.debug('response code : ' + response.getStatusCode());
         // If the request is successful, parse the JSON response.
         if(response.getStatusCode() == 200) {
-            System.debug('response code : ' + response.getBody());
+            return response.getBody();
+        } else {
+            return '';
         }
     }
     
-    public static void getReceipeByIngredients(String ingredients) {
+    @AuraEnabled
+    public static String getRecipeByIngredients(String ingredients) {
         Http http = new Http();
         HttpRequest request = new HttpRequest();
         //https://api.spoonacular.com/recipes/findByIngredients
@@ -39,10 +52,11 @@ public class Spoonacular {
         request.setMethod('GET');
         HttpResponse response = http.send(request);
         
-        System.debug('response code : ' + response.getStatusCode());
         // If the request is successful, parse the JSON response.
         if(response.getStatusCode() == 200) {
-            System.debug('response code : ' + response.getBody());
+            return response.getBody();
+        } else {
+            return '';
         }
     }
 
